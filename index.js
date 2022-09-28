@@ -90,3 +90,15 @@ const generateEmployee = () => {
     })
 }
 
+const writeFile = data => {
+    fs.writeFile("./dist/index.html", data, err =>
+    {
+        if (err) {
+            console.log(err);
+            return;
+        } else {
+            console.log("team generated")
+        }
+    })
+}
+
