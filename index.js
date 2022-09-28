@@ -5,6 +5,7 @@ const Employee = require("./lib/employee.js")
 const Manager = require("./lib/manager.js")
 const Engineer = require("./lib/engineer.js")
 const Intern = require("./lib/intern.js")
+const { choices } = require("yargs")
 
 const generateManager = () => {
     return inquirer.prompt ([
@@ -16,7 +17,7 @@ const generateManager = () => {
         },
         {
             type: "input",
-            name: "ID",
+            name: "id",
             message: "Enter manager ID:"
         },
         {
@@ -29,5 +30,50 @@ const generateManager = () => {
             name: "office",
             message: "Enter manager offcie number:"
         },
+    ])
+}
+
+const generateEmployee = () => {
+    return inquirer.prompt ([
+        {
+            type: "list",
+            name: "role",
+            message: "Employee role:",
+            choices: ["Manager", "Engineer", "Intern"]
+        },
+        {
+            type: "input",
+            name: "name",
+            message: "Enter employee name:"
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "Enter employee ID:"
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "Enter employee email:"
+        },
+        {
+            when: (input) => input.role === "Engineer",
+            type: "input",
+            name: "github",
+            message: "Enter engineer's github:",
+        },
+        {
+            when: (input) => input.role === "Intern",
+            type: "input",
+            name: "school",
+            message: "Enter intern's school name:",
+        },
+        {
+            type: "list",
+            name: "addEmployee",
+            message: "Add employee:",
+            choices: ["Manager", "Engineer", "Intern"],
+        }
+
     ])
 }
