@@ -7,13 +7,14 @@ const Engineer = require("./lib/engineer.js")
 const Intern = require("./lib/intern.js")
 const generateTeam = ("./src/generateTeam.js")
 
+const team = [];
+
 const generateManager = () => {
     return inquirer.prompt ([
         {
             type: "input",
             name: "name",
             message: "Enter manager name:",
-
         },
         {
             type: "input",
@@ -28,7 +29,7 @@ const generateManager = () => {
         {
             type: "input",
             name: "office",
-            message: "Enter manager offcie number:"
+            message: "Enter manager office number:"
         },
     ])
     .then(managerData => {
@@ -44,7 +45,7 @@ const generateEmployee = () => {
             type: "list",
             name: "role",
             message: "Employee role:",
-            choices: ["Manager", "Engineer", "Intern"]
+            choices: ["Engineer", "Intern"]
         },
         {
             type: "input",
@@ -80,8 +81,9 @@ const generateEmployee = () => {
             default: false
         },
     ])
+
     .then(employeeData => {
-        let {name, id, email, role, github, school} = employeeData;
+        let {name, id, email, role, github, school, addEmployee} = employeeData;
         let employee;
         if (role === "Engineer") {
             employee = new Engineer (name, id, email, github);
@@ -89,7 +91,7 @@ const generateEmployee = () => {
             employee = new Intern (name, id, email, school);
         }
         team.push(employee);
-        if (addEmployee) {
+        if (generateEmployee) {
             return generateEmployee(team);
         } else {
             return team;
@@ -109,12 +111,14 @@ const writeFile = data => {
     })
 }
 
-// generateManager()
-//     .then(generateEmployee)
-//     .then(team =>
-//         {
-//             return generateTeam(team);
-//         })
-    
-
-//     )
+generateManager()
+    .then(generateEmployee)
+    .then(team => {
+        return generateTeam(team);
+    })
+    .then(teamHTML => {
+        return writeFile(teamHTML);
+    })
+    .catch(err => {
+        console.log(err)
+    });
