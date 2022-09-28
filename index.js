@@ -1,10 +1,11 @@
 const inquirer = require("inquirer")
-const jest = require("jest")
+// const jest = require("jest")
 const fs = require("fs")
 const Employee = require("./lib/employee.js")
 const Manager = require("./lib/manager.js")
 const Engineer = require("./lib/engineer.js")
 const Intern = require("./lib/intern.js")
+const generateTeam = ("./src/generateTeam.js")
 
 const generateManager = () => {
     return inquirer.prompt ([
@@ -30,6 +31,10 @@ const generateManager = () => {
             message: "Enter manager offcie number:"
         },
     ])
+    .then(managerData => {
+        let {name, id, email, office} = managerData;
+        const manager = new Manager (name, id, email, office);
+    })
 }
 
 const generateEmployee = () => {
@@ -67,12 +72,21 @@ const generateEmployee = () => {
             name: "school",
             message: "Enter intern's school name:",
         },
-        {
-            type: "list",
-            name: "addEmployee",
-            message: "Add employee:",
-            choices: ["Manager", "Engineer", "Intern"],
-        }
-
+        // {
+        //     type: "list",
+        //     name: "addEmployee",
+        //     message: "Add employee:",
+        //     choices: ["Manager", "Engineer", "Intern"],
+        // },
     ])
+    .then(employeeData => {
+        let {name, id, email, role, github, school} = employeeData;
+        let employee;
+        if (role === "Engineer") {
+            employee = new Engineer (name, id, email, github);
+        } else if (role === "Intern") {
+            employee = new Intern (name, id, email, school);
+        }
+    })
 }
+
