@@ -34,6 +34,7 @@ const generateManager = () => {
     .then(managerData => {
         let {name, id, email, office} = managerData;
         const manager = new Manager (name, id, email, office);
+        team.push(manager);
     })
 }
 
@@ -72,12 +73,12 @@ const generateEmployee = () => {
             name: "school",
             message: "Enter intern's school name:",
         },
-        // {
-        //     type: "list",
-        //     name: "addEmployee",
-        //     message: "Add employee:",
-        //     choices: ["Manager", "Engineer", "Intern"],
-        // },
+        {
+            type: "confirm",
+            name: "addEmployee",
+            message: "Add employee?",
+            default: false
+        },
     ])
     .then(employeeData => {
         let {name, id, email, role, github, school} = employeeData;
@@ -86,6 +87,12 @@ const generateEmployee = () => {
             employee = new Engineer (name, id, email, github);
         } else if (role === "Intern") {
             employee = new Intern (name, id, email, school);
+        }
+        team.push(employee);
+        if (addEmployee) {
+            return generateEmployee(team);
+        } else {
+            return team;
         }
     })
 }
@@ -102,3 +109,12 @@ const writeFile = data => {
     })
 }
 
+// generateManager()
+//     .then(generateEmployee)
+//     .then(team =>
+//         {
+//             return generateTeam(team);
+//         })
+    
+
+//     )
